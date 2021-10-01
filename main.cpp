@@ -34,15 +34,13 @@ int main(int argc, char *argv[])
 
     }
 
-
-
-
     QTextStream(stdout) << "Parameters " << argv[1] <<" - - - "<< _begin_time.toString() << " - - - " << _end_time.toString() << " - - - " << argv[4]<< endl;
 
     const QStringList template_chemical = (QStringList() <<"NO" << "NO2" << "NH3"<< "SO2" << "H2S"<< "O3"<< "CO"<< "CH2O"<< "PM1"<< "PM2.5"<< "PM10"<< "Пыль общая"<< "бензол"<< "толуол"<< "этилбензол"<< "м,п-ксилол"<< "о-ксилол"<< "хлорбензол"<< "стирол"<< "фенол");
 
     const QStringList template_weather = (QStringList() << "Темп. внешняя" << "Направление ветра" << "Скорость ветра" << "Влажность внеш."  );
 
+    const QString _dir = QString(argv[4]);
 
     QMap<QString, int> *chemical_classes = new  QMap<QString, int>;
 
@@ -87,13 +85,8 @@ int main(int argc, char *argv[])
 
         _chemical = template_chemical_iterator.next();
 
-        //_chemical_chain{{"срака овечья", 1}};
 
-
-        //chemical_chain[_chemical1.trimmed()] = -1.0;
         jsonobj->insert(_chemical, -1.0);
-        //jsonobj->insert(QString(_chemical).append("_range"), false);
-        //jsonobj->insert(QString(_chemical).append("_empty"), false);
 
         footer->insert(QString(_chemical).append("_exceed1"), 0);
         footer->insert(QString(_chemical).append("_exceed5"), 0);
@@ -109,10 +102,6 @@ int main(int argc, char *argv[])
         footer->insert(QString(_chemical).append("_sindex"), -1.0);
         footer->insert(QString(_chemical).append("_greatest_repeatably"), -1.0);
         footer->insert(QString(_chemical).append("_sigma"), -1.0);
-
-
-        //  chemical_chain.append(QJsonValue( {QString(_chemical).append("_range") , false}));
-        // chemical_chain.append(QJsonValue( {QString(_chemical).append("_empty") , false}));
 
     }
 
@@ -420,7 +409,7 @@ int main(int argc, char *argv[])
 
     //file creation
 
-    QFile file("./api/tza.csv");
+    QFile file(QString(_dir).append("/tza.csv"));
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return -1;
 
